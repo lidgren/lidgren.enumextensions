@@ -18,6 +18,15 @@ namespace Lidgren.EnumExtensions
 				//var code = s_flagsWriteCode;
 				//code = code.Replace("ENUMNAME", ins.EnumName);
 				//strb.AppendLine(code);
+				if (ins.MemberNames.Count < 17)
+				{
+					strb.AppendLine("\t\t\tswitch(value)");
+					strb.AppendLine("\t\t\t{");
+					foreach (var name in ins.MemberNames)
+						strb.AppendLine($"\t\t\t\tcase {ins.EnumName}.{name}: return \"{name}\";");
+					strb.AppendLine("\t\t\t}");
+					strb.AppendLine();
+				}
 
 				strb.AppendLine("\t\t\t// default implementation of flags-to-string is actually pretty good");
 				strb.AppendLine("\t\t\treturn value.ToString();");
