@@ -11,4 +11,5 @@ value.GetNames();
 value.GetValues();
 ```
 
-Mostly exactly matches the regular enum methods; except that GetNames and GetValues does not allocate a new array, but returns a preallocated ReadOnlySpan<string>.
+Mostly exactly matches the regular enum methods; except that GetNames, GetValues and ToString() does not allocate any memory, but returns a readonly span to preallocated data.
+Supports any kind of enum, including flags enums.
