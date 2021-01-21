@@ -39,35 +39,28 @@ namespace Lidgren.EnumExtensions
 				strb.AppendLine($"namespace {ns}");
 				strb.AppendLine("{");
 
-				strb.AppendLine("\tpublic static class EnumExtensionsMethods");
-				strb.AppendLine("\t{");
-
-				strb.AppendLine(
-@"		private ref struct ConcatenateContext
-		{
-			public int NumFlags;
-			public Span<int> FlagIndices;
-			public string[] NamesForFlagsEnum;
-		}
-");
+				//				strb.AppendLine(
+				//@"		private ref struct ConcatenateContext
+				//		{
+				//			public int NumFlags;
+				//			public Span<int> FlagIndices;
+				//			public string[] NamesForFlagsEnum;
+				//		}
+				//");
 
 				for (int i = 0; i < instances.Length; i++)
 				{
 					ref var ins = ref instances[i];
-					try
-					{
-						AnalyzeEnumValues(ref ins);
-						GenerateInstance(ref strb, ins);
-					}
-					catch(Exception ex)
-					{
-						strb.AppendLine("//");
-						strb.AppendLine($"// Exception for {ins.EnumName}: {ex}");
-						strb.AppendLine("//");
-					}
+
+					strb.AppendLine($"\tpublic static class {ins.EnumName}_EnumExtensions");
+					strb.AppendLine("\t{");
+
+					AnalyzeEnumValues(ref ins);
+					GenerateInstance(ref strb, ins);
+
+					strb.AppendLine("\t\tprivate static void ThrowException() { throw new Exception(); }");
+					strb.AppendLine("\t}"); // class
 				}
-				strb.AppendLine("\t\tprivate static void ThrowException() { throw new Exception(); }");
-				strb.AppendLine("\t}"); // class
 				strb.AppendLine("}"); // ns
 
 				context.AddSource(ns + ".EnumExtensions", SourceText.From(strb.ToString(), Encoding.UTF8));
