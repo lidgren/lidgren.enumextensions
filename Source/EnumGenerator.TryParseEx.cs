@@ -30,11 +30,7 @@ namespace Lidgren.EnumExtensions
 			else
 				strb.AppendLine($"\t\tpublic static bool TryParseExIgnoreCase(ref this {ins.EnumName} value, ReadOnlySpan<char> str)");
 
-			strb.AppendLine(
-@"		{
-			if (str.Length == 0)
-				return false;
-");
+			strb.AppendLine("\t\t{");
 			var partFunc = ignoreCase ? "PartTryParseIgnoreCase" : "PartTryParse";
 			strb.AppendLine(
 $@"			{ins.EnumName} retval = default;
@@ -80,10 +76,7 @@ $@"			{ins.EnumName} retval = default;
 					strb.AppendLine($"\t\tpublic static bool TryParseExIgnoreCase(ref this {ins.EnumName} value, ReadOnlySpan<char> str)");
 			}
 
-			strb.AppendLine(
-@"		{
-			if (str.Length == 0)
-				return false;");
+			strb.AppendLine("\t\t{");
 			if (ins.MemberNames.Count == 0)
 			{
 				strb.AppendLine("\t\t\treturn false;");

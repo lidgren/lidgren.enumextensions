@@ -87,6 +87,9 @@ namespace UnitTests
 			var notok = Enum.TryParse<SimpleEnum>("notastringthatexistsinenum", out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+			Assert.IsFalse(val.TryParseEx(null)); // false but not exception
+			Assert.IsFalse(val.TryParseEx("")); // false but not exception
+			Assert.IsFalse(val.TryParseEx(default(ReadOnlySpan<char>))); // false but not exception
 
 			// test isdefined
 			val = SimpleEnum.Apple;
@@ -139,6 +142,9 @@ namespace UnitTests
 			var notok = Enum.TryParse<OffsetEnum>("notastringthatexistsinenum", false, out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+			Assert.IsFalse(val.TryParseEx(null)); // false but not exception
+			Assert.IsFalse(val.TryParseEx("")); // false but not exception
+			Assert.IsFalse(val.TryParseEx(default(ReadOnlySpan<char>))); // false but not exception
 
 			// test isdefined
 			val = OffsetEnum.Apple;
@@ -191,6 +197,9 @@ namespace UnitTests
 			var notok = Enum.TryParse<OffsetDiscontinuousEnum>("notastringthatexistsinenum", false, out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+			Assert.IsFalse(val.TryParseEx(null)); // false but not exception
+			Assert.IsFalse(val.TryParseEx("")); // false but not exception
+			Assert.IsFalse(val.TryParseEx(default(ReadOnlySpan<char>))); // false but not exception
 
 			// test isdefined
 			val = OffsetDiscontinuousEnum.apple;
@@ -244,6 +253,9 @@ namespace UnitTests
 			var notok = Enum.TryParse<FlagsEnum>("notastringthatexistsinenum", false, out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+			Assert.IsFalse(val.TryParseEx(null)); // false but not exception
+			Assert.IsFalse(val.TryParseEx("")); // false but not exception
+			Assert.IsFalse(val.TryParseEx(default(ReadOnlySpan<char>))); // false but not exception
 
 			// flags specific testing
 			var a = FlagsEnum.Apple | FlagsEnum.Book | FlagsEnum.Coconut | FlagsEnum.Dodo;
@@ -289,6 +301,13 @@ namespace UnitTests
 			ok = a.TryParseEx("Coconut, Apple");
 			Assert.IsTrue(ok);
 			Assert.AreEqual(FlagsEnum.Apple | FlagsEnum.Coconut, a);
+
+			ok = a.TryParseEx("Coconut,Apple");
+			Assert.IsTrue(ok);
+			Assert.AreEqual(FlagsEnum.Apple | FlagsEnum.Coconut, a);
+
+			ok = a.TryParseEx("coconut,APPLE");
+			Assert.IsFalse(ok);
 
 			ok = a.TryParseEx("adfasdfdafd");
 			Assert.IsFalse(ok);
