@@ -6,9 +6,9 @@ MyEnum value;
 
 value.ToStringEx();
 value.TryParseEx("MemberName");
-value.IsDefined();
-value.GetNames();
-value.GetValues();
+value.IsDefinedEx();
+value.GetNamesEx();
+value.GetValuesEx();
 ```
 
 Mostly exactly matches the regular enum methods; except that GetNames, GetValues and ToString() does not allocate any memory, but returns a readonly span to preallocated data.
