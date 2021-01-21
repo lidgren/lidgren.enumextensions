@@ -17,9 +17,8 @@ namespace Lidgren.EnumExtensions
 
 			if (ins.MemberNumericValues.Length == 1)
 			{
-				// nothing is ever defined!
 				strb.AppendLine(
-					$"		public static bool IsDefinedEx(this {ins.EnumName} value) => value == {ins.EnumName}.{ins.MemberNumericValues[0]};");
+					$"		public static bool IsDefinedEx(this {ins.EnumName} value) => value == {ins.EnumName}.{ins.MemberNames[0]};");
 				return;
 			}
 
@@ -29,8 +28,7 @@ namespace Lidgren.EnumExtensions
 				strb.AppendLine(
 $@"		public static bool IsDefinedEx(this {ins.EnumName} value)
 		{{
-			{ins.UnderlyingType} val = ({ins.UnderlyingType})value;
-			return val >= {ins.MemberNumericValues[0]} && val <= {ins.MemberNumericValues[ins.MemberNumericValues.Length - 1]};
+			return value >= {ins.EnumName}.{ins.MemberNames[0]} && value <= {ins.EnumName}.{ins.MemberNames[ins.MemberNumericValues.Length - 1]};
 		}}
 ");
 				return;

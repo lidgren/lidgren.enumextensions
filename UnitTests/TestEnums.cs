@@ -3,6 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
+	public enum SingleEntryEnum
+	{
+		Apple,
+	}
+
 	public enum SimpleEnum
 	{
 		Apple,
@@ -82,6 +87,16 @@ namespace UnitTests
 			var notok = Enum.TryParse<SimpleEnum>("notastringthatexistsinenum", out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+
+			// test isdefined
+			val = SimpleEnum.Apple;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = SimpleEnum.Book;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = SimpleEnum.Coconut;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = (SimpleEnum)999;
+			Assert.IsFalse(val.IsDefinedEx());
 		}
 
 		[TestMethod]
@@ -124,6 +139,16 @@ namespace UnitTests
 			var notok = Enum.TryParse<OffsetEnum>("notastringthatexistsinenum", false, out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+
+			// test isdefined
+			val = OffsetEnum.Apple;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = OffsetEnum.Book;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = OffsetEnum.Coconut;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = (OffsetEnum)999;
+			Assert.IsFalse(val.IsDefinedEx());
 		}
 
 		[TestMethod]
@@ -166,6 +191,16 @@ namespace UnitTests
 			var notok = Enum.TryParse<OffsetDiscontinuousEnum>("notastringthatexistsinenum", false, out _);
 			var exnotok = val.TryParseEx("notastringthatexistsinenum");
 			Assert.AreEqual(notok, exnotok);
+
+			// test isdefined
+			val = OffsetDiscontinuousEnum.apple;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = OffsetDiscontinuousEnum.book;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = OffsetDiscontinuousEnum.coconut;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = (OffsetDiscontinuousEnum)999;
+			Assert.IsFalse(val.IsDefinedEx());
 		}
 
 		[TestMethod]
@@ -272,6 +307,65 @@ namespace UnitTests
 			Assert.IsTrue(ok);
 			Assert.AreEqual(FlagsEnum.All, a);
 
+			// test isdefined
+			val = FlagsEnum.Apple;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = FlagsEnum.AppleAndBook;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = FlagsEnum.All;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = FlagsEnum.None;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = (FlagsEnum)999;
+			Assert.IsFalse(val.IsDefinedEx());
+		}
+
+		[TestMethod]
+		public void TestSingleEntryEnum()
+		{
+			var tp = typeof(SingleEntryEnum);
+			var val = default(SingleEntryEnum);
+
+			// test GetNamesEx()
+			var facitNames = Enum.GetNames(tp);
+			var exNames = val.GetNamesEx();
+			Assert.AreEqual(facitNames.Length, exNames.Length);
+			for (int i = 0; i < facitNames.Length; i++)
+				Assert.AreEqual(facitNames[i], exNames[i]);
+
+			// test GetValuesEx
+			var facitValues = Enum.GetValues<SingleEntryEnum>();
+			var exValues = val.GetValuesEx();
+			Assert.AreEqual(facitNames.Length, exNames.Length);
+			for (int i = 0; i < facitValues.Length; i++)
+				Assert.AreEqual(facitValues[i], exValues[i]);
+
+			// test ToStringEx()
+			foreach (var value in facitValues)
+				Assert.AreEqual(value.ToString(), value.ToStringEx());
+
+			// test TryParseEx
+			foreach (var name in facitNames)
+			{
+				var facit = Enum.Parse<SingleEntryEnum>(name);
+
+				val = default;
+				bool ok = val.TryParseEx(name);
+
+				Assert.IsTrue(ok);
+				Assert.AreEqual(facit, val);
+			}
+
+			// test failed tryparse
+			var notok = Enum.TryParse<SingleEntryEnum>("notastringthatexistsinenum", out _);
+			var exnotok = val.TryParseEx("notastringthatexistsinenum");
+			Assert.AreEqual(notok, exnotok);
+
+			// test isdefined
+			val = SingleEntryEnum.Apple;
+			Assert.IsTrue(val.IsDefinedEx());
+			val = (SingleEntryEnum)999;
+			Assert.IsFalse(val.IsDefinedEx());
 		}
 	}
 }

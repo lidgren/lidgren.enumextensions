@@ -83,8 +83,7 @@ $@"			{ins.EnumName} retval = default;
 			strb.AppendLine(
 @"		{
 			if (str.Length == 0)
-				return false;
-");
+				return false;");
 			if (ins.MemberNames.Count == 0)
 			{
 				strb.AppendLine("\t\t\treturn false;");
@@ -92,11 +91,10 @@ $@"			{ins.EnumName} retval = default;
 			else if (ins.MemberNames.Count == 1)
 			{
 				strb.AppendLine("\t\t\t{");
-
 				if (ignoreCase)
 					strb.AppendLine($"\t\t\tbool match0 = str.Equals(\"{ins.MemberNames[0]}\", StringComparison.OrdinalIgnoreCase);");
 				else
-					strb.AppendLine($"\t\t\tbool match0 = str.SequenceEquals(\"{ins.MemberNames[0]}\");");
+					strb.AppendLine($"\t\t\tbool match0 = str.Equals(\"{ins.MemberNames[0]}\", StringComparison.Ordinal);");
 
 				strb.AppendLine("\t\t\tif (match0)");
 				strb.AppendLine($"\t\t\t\tvalue = {ins.EnumName}.{ins.MemberNames[0]};");
