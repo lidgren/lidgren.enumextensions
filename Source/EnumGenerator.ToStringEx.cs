@@ -9,6 +9,8 @@ namespace Lidgren.EnumExtensions
 		private void GenerateToStringEx(ref ValueStringBuilder strb, in EnumInstance ins)
 		{
 			// Assumed to run AFTER GenerateGetNamesEx
+			if (!ins.IsFlags && ins.IsContinuous)
+				strb.AppendLine("\t\t[MethodImpl(MethodImplOptions.AggressiveInlining)]");
 
 			strb.AppendLine($"\t\tpublic static string ToStringEx(this {ins.EnumName} value)");
 			strb.AppendLine("\t\t{");
@@ -45,7 +47,7 @@ namespace Lidgren.EnumExtensions
 				{
 					var member = ins.MemberNames[i];
 					strb.AppendLine($"\t\t\t\tcase {ins.EnumName}.{member}:");
-					strb.AppendLine($"\t\t\t\t\treturn s_namesFor{ins.EnumName}[{i}];");
+					strb.AppendLine($"\t\t\t\t\treturn \"{ins.MemberNames[i]}\";");
 				}
 				strb.AppendLine("\t\t\t\tdefault:");
 				strb.AppendLine("\t\t\t\t\tThrowException();");

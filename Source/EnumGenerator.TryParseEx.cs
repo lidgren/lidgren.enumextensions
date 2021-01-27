@@ -61,6 +61,9 @@ $@"			{ins.EnumName} retval = default;
 
 		private void PerformGenerateTryParse(ref ValueStringBuilder strb, in EnumInstance ins, bool part, bool ignoreCase)
 		{
+			if (ins.MemberNames.Count < 2)
+				strb.AppendLine("\t\t[MethodImpl(MethodImplOptions.AggressiveInlining)]");
+
 			if (part)
 			{
 				if (ignoreCase == false)
@@ -105,7 +108,7 @@ $@"			// FNV1a
 			ulong hash = 14695981039346656037ul;
 			for (int i = 0; i < str.Length; i++)
 				hash = (hash ^ (uint)char.ToLower(str[i])) * 1099511628211ul;
-			
+
 			switch(hash)
 			{{");
 				}

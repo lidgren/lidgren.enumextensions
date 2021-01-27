@@ -35,7 +35,14 @@ namespace Lidgren.EnumExtensions
 
 				strb.Clear();
 				strb.AppendLine("using System;");
+				strb.AppendLine("using System.Runtime.CompilerServices;");
 				strb.AppendLine();
+
+				strb.AppendLine("// preprocessor symbols:");
+				foreach (var symbol in context.ParseOptions.PreprocessorSymbolNames)
+					strb.AppendLine("// " + symbol);
+				strb.AppendLine();
+
 				strb.AppendLine($"namespace {ns}");
 				strb.AppendLine("{");
 
@@ -55,9 +62,15 @@ namespace Lidgren.EnumExtensions
 					strb.AppendLine($"\tpublic static class {ins.EnumName}_EnumExtensions");
 					strb.AppendLine("\t{");
 
-					AnalyzeEnumValues(ref ins);
-					GenerateInstance(ref strb, ins);
-
+					try
+					{
+						AnalyzeEnumValues(ref ins);
+						GenerateInstance(ref strb, ins);
+					}
+					catch (Exception ex)
+					{
+						strb.AppendLine("#error " + ex.ToString());
+					}
 					strb.AppendLine("\t\tprivate static void ThrowException() { throw new Exception(); }");
 					strb.AppendLine("\t}"); // class
 				}
